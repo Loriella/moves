@@ -21,6 +21,14 @@ class App extends React.Component {
     })
   };
 
+  addMovieWillWatch = movie => {
+    const updateMovies = [...this.state.moviesWillWatch];
+    updateMovies.push(movie);
+    this.setState({
+      moviesWillWatch: updateMovies
+    })
+  };
+
   render() {
     return (
       <div className="container">
@@ -33,6 +41,7 @@ class App extends React.Component {
                     <MovieItem
                       movie={movie}
                       removeMovie={this.removeMovie}
+                      addMovieWillWatch={this.addMovieWillWatch}
                     />
                   </div>
                 );
@@ -40,7 +49,7 @@ class App extends React.Component {
             </div>
           </div>
           <div className="col-3">
-            <p>Will watch: 0</p>
+            <p>Will watch: {this.state.moviesWillWatch.length}</p>
           </div>
         </div>
       </div>

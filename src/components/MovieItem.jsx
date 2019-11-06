@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MovieItem = props => {
-  const {movie, removeMovie} = props;
+  const {movie, removeMovie, addMovieWillWatch} = props;
   return (
     <div>
       <div className="card">
@@ -17,11 +17,16 @@ const MovieItem = props => {
             <p className="mb-0">Rating: {movie.vote_average}</p>
             <button
               type="button"
+              onClick={addMovieWillWatch.bind(null, movie)}
               className="btn btn-secondary"
             >
               Will watch
             </button>
-            <button onClick={removeMovie.bind(null, movie)}>
+            <button
+              type="button"
+              onClick={removeMovie.bind(null, movie)}
+              className="btn btn-secondary"
+            >
               Delete movie
             </button>
           </div>

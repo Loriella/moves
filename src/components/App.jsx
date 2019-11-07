@@ -1,5 +1,6 @@
 import React from "react";
-import {moviesData} from '../moviesData';
+// import {moviesData} from '../moviesData';
+import {API_URL, API_KEY_3} from '../utils/api';
 import MovieItem from "./MovieItem";
 
 class App extends React.Component {
@@ -7,9 +8,21 @@ class App extends React.Component {
     super();
 
     this.state = {
-      movies: moviesData,
+      movies: [],
       moviesWillWatch: []
     }
+  }
+
+  componentDidMount() {
+    fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}`)
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+          this.setState({
+            movies: data.results
+      })
+    });
   }
 
   removeMovie = movie => {

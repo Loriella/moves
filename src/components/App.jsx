@@ -3,6 +3,7 @@ import React from 'react';
 import {API_URL, API_KEY_3} from '../utils/api';
 import MovieItem from './MovieItem';
 import MovieTabs from './MovieTabs';
+import LoginForm from './LoginForm';
 
 class App extends React.Component {
   constructor() {
@@ -11,7 +12,8 @@ class App extends React.Component {
     this.state = {
       movies: [],
       moviesWillWatch: [],
-      sort_by: 'revenue.desc'
+      sort_by: 'revenue.desc',
+      isAuth: false
     }
   }
 
@@ -71,37 +73,40 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-9">
-            <div className="row mb-4">
-              <div className="col-12">
-                <MovieTabs
-                  sort_by={this.state.sort_by}
-                  updateSortBy={this.updateSortBy}
-                />
+      this.state.isAuth ?
+        <div className="container">
+          <div className="row">
+            <div className="col-9">
+              <div className="row mb-4">
+                <div className="col-12">
+                  <MovieTabs
+                    sort_by={this.state.sort_by}
+                    updateSortBy={this.updateSortBy}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                {this.state.movies.map(movie => {
+                  return (
+                    <div className="col-6 mb-4" key={movie.id}>
+                      <MovieItem
+                        movie={movie}
+                        removeMovie={this.removeMovie}
+                        addMovieWillWatch={this.addMovieWillWatch}
+                        removeMovieFromWillWatch={this.removeMovieFromWillWatch}
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
-            <div className="row">
-              {this.state.movies.map(movie => {
-                return (
-                  <div className="col-6 mb-4" key={movie.id}>
-                    <MovieItem
-                      movie={movie}
-                      removeMovie={this.removeMovie}
-                      addMovieWillWatch={this.addMovieWillWatch}
-                      removeMovieFromWillWatch={this.removeMovieFromWillWatch}
-                    />
-                  </div>
-                );
-              })}
+            <div className="col-3">
+              <p>Will watch: {this.state.moviesWillWatch.length}</p>
             </div>
           </div>
-          <div className="col-3">
-            <p>Will watch: {this.state.moviesWillWatch.length}</p>
-          </div>
-        </div>
-      </div>
+        </div> : (
+          <LoginForm/>
+        )
     );
   }
 }

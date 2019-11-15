@@ -2,6 +2,7 @@ import React from 'react';
 import {API_KEY_3, callApi} from '../utils/api';
 import MovieItem from './MovieItem';
 import MovieTabs from './MovieTabs';
+import Pagination from './Pagination';
 
 class MoviesPage extends React.Component {
   constructor() {
@@ -91,6 +92,9 @@ class MoviesPage extends React.Component {
                     </div>
                   );
                 })}
+              </div>
+              <div className="row mb-4 justify-content-center">
+                <Pagination/>
               </div>
             </div>
             <div className="col-3">

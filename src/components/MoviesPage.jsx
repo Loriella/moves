@@ -1,5 +1,5 @@
 import React from 'react';
-import {API_URL, API_KEY_3} from '../utils/api';
+import {API_KEY_3, callApi} from '../utils/api';
 import MovieItem from './MovieItem';
 import MovieTabs from './MovieTabs';
 
@@ -25,15 +25,12 @@ class MoviesPage extends React.Component {
   }
 
   getMovies = () => {
-    fetch(`${API_URL}/discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}`)
-      .then((response) => {
-        return response.json()
+    callApi(`discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}`)
+    .then((data) => {
+      this.setState({
+        movies: data.results
       })
-      .then((data) => {
-        this.setState({
-          movies: data.results
-        })
-      });
+    });
   };
 
   removeMovie = movie => {

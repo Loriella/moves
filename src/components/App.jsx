@@ -8,7 +8,7 @@ class App extends React.Component {
     super();
 
     this.state = {
-      isAuth: false
+      isAuth: true
     }
   }
 

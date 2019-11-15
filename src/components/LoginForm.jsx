@@ -9,7 +9,8 @@ class LoginForm extends React.Component {
 
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      error: null
     }
   }
 
@@ -43,7 +44,40 @@ class LoginForm extends React.Component {
         return response.json()
       })
       .then(data => {
-
+        const { request_token} = data;
+        fetch(
+          `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "content-type" : "application/json"
+            },
+            body: JSON.stringify({
+              username: this.state.username,
+              password: this.state.password,
+              request_token: request_token
+            })
+          }
+        )
+          .then(response => {
+            if (response.status < 400) {
+              return response.json()
+            } else {
+              throw response.json();
+            }
+          })
+          .then(data => {
+            console.log("data", data);
+            this.props.updateIsAuth(true)
+          })
+          .catch(response => {
+            response.then(error =>{
+             this.setState({
+               error: error.status_message
+             })
+            })
+          })
     })
   };
 
@@ -88,6 +122,10 @@ class LoginForm extends React.Component {
           >
             Вход
           </button>
+          {this.state.error ? (
+            <div className="invalid-feedback">{this.state.error}</div>
+          ) : null
+          }
         </form>
       </div>
     );

@@ -9,6 +9,11 @@ body {
   &:hover {
     color: #007bff;
   }
+
+  &.active,
+  &.disabled {
+    cursor: text;
+  }
 }
 
 .form-login-container {

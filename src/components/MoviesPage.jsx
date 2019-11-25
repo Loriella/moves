@@ -12,6 +12,8 @@ class MoviesPage extends React.Component {
       movies: [],
       moviesWillWatch: [],
       sort_by: 'revenue.desc',
+      page: 1,
+      total_pages: 1
     }
   }
 
@@ -20,16 +22,17 @@ class MoviesPage extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.sort_by!== this.state.sort_by) {
+    if (prevState.sort_by!== this.state.sort_by || prevState.page !== this.state.page) {
       this.getMovies()
     }
   }
 
   getMovies = () => {
-    callApi(`discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}`)
+    callApi(`discover/movie?api_key=${API_KEY_3}&sort_by=${this.state.sort_by}&page=${this.state.page}`)
     .then((data) => {
       this.setState({
-        movies: data.results
+        movies: data.results,
+        total_pages: data.total_pages
       })
     });
   };
@@ -62,7 +65,14 @@ class MoviesPage extends React.Component {
 
   updateSortBy = value => {
     this.setState({
-      sort_by: value
+      sort_by: value,
+      page: 1
+    })
+  };
+
+  updatePage = pageNumber => {
+    this.setState({
+      page: pageNumber
     })
   };
 
@@ -94,7 +104,11 @@ class MoviesPage extends React.Component {
                 })}
               </div>
               <div className="row mb-4 justify-content-center">
-                <Pagination/>
+                <Pagination
+                  currentPage={this.state.page}
+                  totalPages={this.state.total_pages}
+                  updatePage={this.updatePage}
+                />
               </div>
             </div>
             <div className="col-3">
